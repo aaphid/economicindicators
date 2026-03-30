@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=1300, user-scalable=yes">
 <title>Economic Indicators</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -28,7 +28,7 @@
     color: var(--text);
     font-family: var(--mono);
     min-height: 100vh;
-    overflow-x: hidden;
+    overflow-x: auto;
   }
 
   /* Grid background */
@@ -332,17 +332,6 @@
     border-radius: 8px;
   }
 
-  /* ── ANIMATIONS ── */
-  .col { animation: fadeUp 0.5s ease both; }
-  .col:nth-child(1) { animation-delay: 0.05s; }
-  .col:nth-child(2) { animation-delay: 0.15s; }
-  .col:nth-child(3) { animation-delay: 0.25s; }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
   /* ── RESPONSIVE ── */
   @media (max-width: 1100px) {
     .dashboard { grid-template-columns: 1fr 1fr; }
@@ -354,6 +343,17 @@
     .col { border-right: none; border-bottom: 1px solid var(--border); padding: 24px 18px; }
     header { padding: 16px 20px; }
   }
+  .col { animation: fadeUp 0.5s ease both; }
+  .col:nth-child(1) { animation-delay: 0.05s; }
+  .col:nth-child(2) { animation-delay: 0.15s; }
+  .col:nth-child(3) { animation-delay: 0.25s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+
 </style>
 </head>
 <body>
