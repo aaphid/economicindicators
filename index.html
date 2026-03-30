@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=1300">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Economic Indicators</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -13,7 +13,7 @@
     --border: #1e2a3a;
     --accent: #00d4aa;
     --accent2: #ff6b35;
-    --accent3: #4d9f
+    --accent3: #4d9fff;
     --text: #c8d6e8;
     --text-dim: #5a7080;
     --text-bright: #e8f0f8;
@@ -332,7 +332,7 @@
     border-radius: 8px;
   }
 
-
+  /* ── ANIMATIONS ── */
   .col { animation: fadeUp 0.5s ease both; }
   .col:nth-child(1) { animation-delay: 0.05s; }
   .col:nth-child(2) { animation-delay: 0.15s; }
@@ -343,7 +343,17 @@
     to   { opacity: 1; transform: translateY(0); }
   }
 
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1100px) {
+    .dashboard { grid-template-columns: 1fr 1fr; }
+    .col:nth-child(3) { grid-column: 1 / -1; border-right: none; border-top: 1px solid var(--border); }
+  }
 
+  @media (max-width: 700px) {
+    .dashboard { grid-template-columns: 1fr; }
+    .col { border-right: none; border-bottom: 1px solid var(--border); padding: 24px 18px; }
+    header { padding: 16px 20px; }
+  }
 </style>
 </head>
 <body>
