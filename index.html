@@ -1,365 +1,568 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Economic Indicators</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-html, body {
-  background-color: #F0E68C;
-  margin: 0;
-  padding: 20px;
-}
+  :root {
+    --bg: #0a0e14;
+    --surface: #111620;
+    --surface2: #161d2a;
+    --border: #1e2a3a;
+    --accent: #00d4aa;
+    --accent2: #ff6b35;
+    --accent3: #4d9fff;
+    --text: #c8d6e8;
+    --text-dim: #5a7080;
+    --text-bright: #e8f0f8;
+    --mono: 'DM Mono', monospace;
+    --display: 'Syne', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,212,170,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,170,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page-wrap {
+    position: relative;
+    z-index: 1;
+    padding: 0 0 60px;
+  }
+
+  /* ── HEADER ── */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 22px 40px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,14,20,0.95);
+    backdrop-filter: blur(12px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header-brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .header-logo {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--accent), var(--accent3));
+    border-radius: 8px;
+    display: grid;
+    place-items: center;
+  }
+
+  .header-logo svg { width: 20px; height: 20px; }
+
+  h1 {
+    font-family: var(--display);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--text-bright);
+  }
+
+  .header-badge {
+    font-size: 10px;
+    padding: 3px 8px;
+    background: rgba(0,212,170,0.12);
+    border: 1px solid rgba(0,212,170,0.3);
+    border-radius: 20px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .header-meta {
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+  }
+
+  .live-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    margin-right: 6px;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(0,212,170,0.4); }
+    50% { opacity: 0.7; box-shadow: 0 0 0 5px rgba(0,212,170,0); }
+  }
+
+  /* ── SECTION LABELS ── */
+  .section-label {
+    font-family: var(--display);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── MAIN LAYOUT ── */
+  .dashboard {
+    display: grid;
+    grid-template-columns: 35% 20% 45%;
+    gap: 0;
+    min-height: calc(100vh - 80px);
+    align-items: start;
+  }
+
+  .col {
+    padding: 16px 12px;
+    border-right: 1px solid var(--border);
+  }
+
+  .col:last-child { border-right: none; }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 6px;
+    margin-bottom: 8px;
+    transition: border-color 0.2s;
+  }
+
+  .card:hover { border-color: rgba(0,212,170,0.25); }
+
+  .card-title {
+    font-family: var(--display);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .card-link {
+    font-size: 10px;
+    color: var(--accent3);
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+  }
+
+  .card-link:hover { opacity: 1; }
+
+  /* ── BUTTONS ── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+
+  .btn:hover {
+    background: rgba(0,212,170,0.08);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .btn-primary {
+    background: rgba(0,212,170,0.1);
+    border-color: rgba(0,212,170,0.4);
+    color: var(--accent);
+  }
+
+  .btn-secondary {
+    border-color: rgba(77,159,255,0.3);
+    color: var(--accent3);
+  }
+
+  .btn-secondary:hover {
+    background: rgba(77,159,255,0.08);
+    border-color: var(--accent3);
+    color: var(--accent3);
+  }
+
+  /* ── DIVIDERS & SPACING ── */
+  .spacer { height: 24px; }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 24px 0;
+  }
+
+  /* ── IFRAME / EMBED WRAPPERS ── */
+  .embed-wrap {
+    border-radius: 2px;
+    overflow: hidden;
+    border: none;
+    background: var(--surface2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .embed-wrap iframe,
+  .embed-wrap img {
+    display: block;
+    max-width: 100%;
+  }
+
+  /* ── SIDE PANEL WIDGETS ── */
+  .widget-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 6px;
+    margin-bottom: 8px;
+    overflow: hidden;
+  }
+
+  .widget-label {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 12px;
+    font-family: var(--display);
+  }
+
+  /* ── STAT TILES ── */
+  .stat-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .stat-tile {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 12px;
+  }
+
+  .stat-tile .label {
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+  }
+
+  .stat-tile .value {
+    font-family: var(--display);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-bright);
+  }
+
+  .stat-tile .change {
+    font-size: 10px;
+    margin-top: 4px;
+  }
+
+  .up { color: var(--accent); }
+  .down { color: var(--accent2); }
+
+  /* ── FOOTER NOTE ── */
+  .data-note {
+    font-size: 10px;
+    color: var(--text-dim);
+    text-align: center;
+    letter-spacing: 0.05em;
+    padding: 12px;
+    border-top: 1px solid var(--border);
+    background: var(--surface);
+    border-radius: 8px;
+  }
+
+  /* ── ANIMATIONS ── */
+  .col { animation: fadeUp 0.5s ease both; }
+  .col:nth-child(1) { animation-delay: 0.05s; }
+  .col:nth-child(2) { animation-delay: 0.15s; }
+  .col:nth-child(3) { animation-delay: 0.25s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1100px) {
+    .dashboard { grid-template-columns: 1fr 1fr; }
+    .col:nth-child(3) { grid-column: 1 / -1; border-right: none; border-top: 1px solid var(--border); }
+  }
+
+  @media (max-width: 700px) {
+    .dashboard { grid-template-columns: 1fr; }
+    .col { border-right: none; border-bottom: 1px solid var(--border); padding: 24px 18px; }
+    header { padding: 16px 20px; }
+  }
 </style>
 </head>
 <body>
 
+<div class="page-wrap">
 
-<table border="0" width="100%" cellpadding="1">
-<tr>
+  <!-- HEADER -->
+  <header>
+    <div class="header-brand">
+      <div class="header-logo">
+        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2 15 L6 9 L10 12 L14 5 L18 8" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="18" cy="8" r="1.5" fill="white"/>
+        </svg>
+      </div>
+      <h1>Economic Indicators</h1>
+      <span class="header-badge">Dashboard</span>
+    </div>
+    <div class="header-meta">
+      <span class="live-dot"></span>Some live · some end-of-day data
+    </div>
+  </header>
 
-<td width="30%" valign="top">
+  <!-- DASHBOARD GRID -->
+  <div class="dashboard">
 
+    <!-- ══ COL 1: MARKETS ══ -->
+    <div class="col">
+      <div class="section-label">Markets Overview</div>
 
-<div align="center">
-        Some live and some end of day data
-<!-- TradingView Widget BEGIN -->
-<div class="tradingview-widget-container">
-  <div class="tradingview-widget-container__widget"></div>
-  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div>
-  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
-  {
-  "colorTheme": "light",
-  "dateRange": "12M",
-  "showChart": true,
-  "locale": "en",
-  "largeChartUrl": "",
-  "isTransparent": false,
-  "showSymbolLogo": true,
-  "showFloatingTooltip": true,
-  "width": "400",
-  "height": "660",
-  "plotLineColorGrowing": "rgba(41, 98, 255, 1)",
-  "plotLineColorFalling": "rgba(41, 98, 255, 1)",
-  "gridLineColor": "rgba(255, 152, 0, 0.41)",
-  "scaleFontColor": "rgba(106, 109, 120, 1)",
-  "belowLineFillColorGrowing": "rgba(41, 98, 255, 0.12)",
-  "belowLineFillColorFalling": "rgba(41, 98, 255, 0.12)",
-  "belowLineFillColorGrowingBottom": "rgba(41, 98, 255, 0)",
-  "belowLineFillColorFallingBottom": "rgba(41, 98, 255, 0)",
-  "symbolActiveColor": "rgba(230, 145, 56, 0.12)",
-  "tabs": [
-    {
-      "title": "Indices",
-      "symbols": [
-        {
-          "s": "FOREXCOM:SPXUSD",
-          "d": "S&P 500"
-        },
-        {
-          "s": "FOREXCOM:DJI",
-          "d": "Dow 30"
-        },
-        {
-          "s": "INDEX:AORD",
-          "d": "All Ordinaries"
-        },
-        {
-          "s": "EIGHTCAP:ASX200",
-          "d": "ASX200"
-        },
-        {
-          "s": "ASX:XVI",
-          "d": "ASX 200 VIX"
-        },
-        {
-          "s": "SSE:000001",
-          "d": "Shanghai Composite"
-        }
-      ],
-      "originalTitle": "Indices"
-    },
-    {
-      "title": "Commodities",
-      "symbols": [
-        {
-          "s": "OANDA:XAGAUD",
-          "d": "Silver AUD"
-        },
-        {
-          "s": "OANDA:XAGUSD",
-          "d": "Silver USD"
-        },
-        {
-          "s": "OANDA:XAUAUD",
-          "d": "Gold AUD"
-        },
-        {
-          "s": "OANDA:XAUUSD",
-          "d": "Gold USD"
-        },
-        {
-          "s": "GOLDSILVER",
-          "d": "GOLDSILVER Ratio"
-        },
-        {
-          "s": "TVC:GOLDSILVER",
-          "d": "AU AG Ratio"
-        }
-      ],
-      "originalTitle": "Futures"
-    },
-    {
-      "title": "Misc",
-      "symbols": [
-        {
-          "s": "INDEX:NKY",
-          "d": "Nikkei 225"
-        },
-        {
-          "s": "FOREXCOM:UKXGBP",
-          "d": "UK100"
-        },
-        {
-          "s": "CME_MINI:ES1!",
-          "d": "S&P 500 Mini"
-        },
-        {
-          "s": "CBOT:ZT1!",
-          "d": "2 Year T Note Futures"
-        },
-        {
-          "s": "XETR:DAX",
-          "d": "DAX"
-        },
-        {
-          "s": "BITSTAMP:BTCUSD",
-          "d": "Bitcoin USD"
-        }
-      ],
-      "originalTitle": "ds"
-    },
-    {
-      "title": "Forex",
-      "symbols": [
-        {
-          "s": "FX:AUDUSD",
-          "d": "AUD/USD"
-        },
-        {
-          "s": "PEPPERSTONE:USDX",
-          "d": "USDX"
-        },
-        {
-          "s": "FX_IDC:AUDTHB",
-          "d": "AUD/THB"
-        },
-        {
-          "s": "FX_IDC:AUDVND",
-          "d": "AUD/VND"
-        },
-        {
-          "s": "FX_IDC:AUDMYR",
-          "d": "AUD/MYR"
-        },
-        {
-          "s": "FX_IDC:AUDIDR",
-          "d": "AUD/IDR"
-        }
-      ],
-      "originalTitle": "Forex"
-    }
-  ]
-}
-  </script>
-</div>
-<!-- TradingView Widget END -->
-</div>
+      <div class="card">
+        <div class="card-title">
+          Indices · Commodities · Forex
+          <span style="font-size:10px; color: var(--text-dim);">TradingView</span>
+        </div>
+        <div class="embed-wrap">
+          <!-- TradingView Widget BEGIN -->
+          <div class="tradingview-widget-container">
+            <div class="tradingview-widget-container__widget"></div>
+            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
+            {
+              "colorTheme": "dark",
+              "dateRange": "12M",
+              "showChart": true,
+              "locale": "en",
+              "largeChartUrl": "",
+              "isTransparent": true,
+              "showSymbolLogo": true,
+              "showFloatingTooltip": true,
+              "width": "360",
+              "height": "620",
+              "tabs": [
+                {"title":"Indices","symbols":[{"s":"FOREXCOM:SPXUSD","d":"S&P 500"},{"s":"FOREXCOM:DJI","d":"Dow 30"},{"s":"INDEX:AORD","d":"All Ordinaries"},{"s":"EIGHTCAP:ASX200","d":"ASX200"},{"s":"ASX:XVI","d":"ASX 200 VIX"},{"s":"SSE:000001","d":"Shanghai Composite"}],"originalTitle":"Indices"},
+                {"title":"Commodities","symbols":[{"s":"OANDA:XAGAUD","d":"Silver AUD"},{"s":"OANDA:XAGUSD","d":"Silver USD"},{"s":"OANDA:XAUAUD","d":"Gold AUD"},{"s":"OANDA:XAUUSD","d":"Gold USD"},{"s":"GOLDSILVER","d":"GOLDSILVER Ratio"},{"s":"TVC:GOLDSILVER","d":"AU AG Ratio"}],"originalTitle":"Futures"},
+                {"title":"Misc","symbols":[{"s":"INDEX:NKY","d":"Nikkei 225"},{"s":"FOREXCOM:UKXGBP","d":"UK100"},{"s":"CME_MINI:ES1!","d":"S&P 500 Mini"},{"s":"CBOT:ZT1!","d":"2 Year T Note Futures"},{"s":"XETR:DAX","d":"DAX"},{"s":"BITSTAMP:BTCUSD","d":"Bitcoin USD"}],"originalTitle":"ds"},
+                {"title":"Forex","symbols":[{"s":"FX:AUDUSD","d":"AUD/USD"},{"s":"PEPPERSTONE:USDX","d":"USDX"},{"s":"FX_IDC:AUDTHB","d":"AUD/THB"},{"s":"FX_IDC:AUDVND","d":"AUD/VND"},{"s":"FX_IDC:AUDMYR","d":"AUD/MYR"},{"s":"FX_IDC:AUDIDR","d":"AUD/IDR"}],"originalTitle":"Forex"}
+              ]
+            }
+            </script>
+          </div>
+          <!-- TradingView Widget END -->
+        </div>
+      </div>
 
+      <div class="card">
+        <div class="card-title">Live Market Data</div>
+        <div style="overflow:hidden; width:100%;">
+          <iframe frameborder="0" scrolling="no" height="246" width="304" allowtransparency="true" marginwidth="0" marginheight="0"
+            style="transform-origin: top left; transform: scale(1.28); display:block;"
+            src="https://indrates.investing.com/index.php?force_lang=1&pairs_ids=166;172;27;167;40830;179;53094;&header-text-color=%23FFFFFF&curr-name-color=%230059b0&inner-text-color=%23000000&green-text-color=%232A8215&green-background=%23B7F4C2&red-text-color=%23DC0001&red-background=%23FFE2E2&inner-border-color=%23CBCBCB&border-color=%23cbcbcb&bg1=%23F6F6F6&bg2=%23ffffff&open=hide&high=hide&low=hide&last_update=hide">
+          </iframe>
+        </div>
+      </div>
+    </div>
 
-<br>
-<br>
-<br>
+    <!-- ══ COL 2: PRICES ══ -->
+    <div class="col">
+      <div class="section-label">Spot Prices</div>
 
-<div align="center">
-        USA Interest Rates.  Also <a href="https://fred.stlouisfed.org/series/FEDFUNDS#0" target="_blank">Fed data</a> 
+      <div class="widget-block">
+        <div class="widget-label">Oil Price</div>
+        <div style="width:100%; overflow:hidden;">
+          <script type="text/javascript" src="https://www.oil-price.net/TABLE2/gen.php?lang=en"></script>
+          <noscript><a href="http://www.oil-price.net/dashboard.php?lang=en">Enable JS to see oil price.</a></noscript>
+        </div>
+      </div>
 
-<a href='https://tradingeconomics.com/united-states/interest-rate' target='_blank'>
-<img src='https://d3fy651gv2fhd3.cloudfront.net/charts/united-states-interest-rate.png?s=fdtr&v=202004091500V20191105&d1=19200508' width="484px" height="286px"/></a>
+      <div class="widget-block">
+        <div class="widget-label">Gold Price</div>
+        <div style="width:100%; overflow:hidden;">
+          <script type="text/javascript" src="https://www.gold-quote.net/TABLE2/gen.php?lang=en"></script>
+          <noscript><a href="http://www.gold-quote.net">Enable JS to see gold price.</a></noscript>
+        </div>
+      </div>
 
-</div>
+      <div class="widget-block">
+        <div class="widget-label">Gold 24h (Kitco)</div>
+        <div style="text-align:center;">
+          <a href="https://economicindicators.rf.gd/Gold.html" target="_blank">
+            <img alt="Gold quotes from kitco.com" src="http://www.kitconet.com/charts/metals/gold/t24_au_en_auoz_2.gif" style="border:none; border-radius:3px; width:100%; max-width:240px; height:auto;">
+          </a>
+        </div>
+      </div>
 
-<br>
-<br>
+      <div class="widget-block">
+        <div class="widget-label">AUD Forex Rates</div>
+        <div style="font-size:11px; color:var(--text-dim); text-align:center;">
+          <div style="overflow:hidden; width:100%;">
+            <div style="transform-origin: top center; transform: scale(1.4); display:block; background:#fff; border-radius:3px;">
+              <script type="text/javascript">
+                var tz = '10'; var mc = 'AUD'; var nb = '2';
+                var c1 = 'USD'; var c2 = 'NZD';
+                var bc = 'Base Currency'; var lc = '003366'; var bdrc = 'CBCBCB';
+              </script>
+              <script type="text/javascript" src="http://www.currency.me.uk/remote/FE-FERT-1.php"></script>
+            </div>
+          </div>
+          <div style="margin-top:6px;">
+            <a href="http://www.exchangerates.org.uk" target="_blank" style="color:var(--accent3); font-size:10px; text-decoration:none;">exchangerates.org.uk ↗</a>
+          </div>
+        </div>
+      </div>
 
-<div align="center">
-<FORM>
-<INPUT TYPE="BUTTON" VALUE="     Click Here For US Economic Data    " ONCLICK="window.location.href=\"additional-usa-indicators.html\""></FORM>
-</div>
-    
-<br>
-<br>
-<br>
+      <a href="http://economicindicators.rf.gd/Additional%20AUS%20Indicators.html" class="btn btn-secondary">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        AUS Economic Data
+      </a>
 
-<div align="center" style="margin-top:30px;">
-  <a href="additional-usa-indicators.html"><b>Additional USA Economic Indicators</b></a>
-</div>
+      <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:10px;">
+        <a href="https://aaphid.github.io/economicindicators/additional-usa-indicators.html" class="btn btn-primary">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          US Economic Data
+        </a>
+        <a href="http://economicindicators.rf.gd/weather.html" class="btn" style="border-color: rgba(255,107,53,0.3); color: var(--accent2);">
+          ☁ Weather &amp; Beach
+        </a>
+      </div>
 
-<br>
-<br>
+      <div class="data-note" style="margin-top:10px;">
+        <span class="live-dot"></span>
+        Live &amp; end-of-day data — refresh for latest
+      </div>
 
-<div align="center">
-        Live Market Data
-</div>
+      <!-- StatCounter -->
+      <script type="text/javascript">
+        var sc_project=9955760; var sc_invisible=1; var sc_security="2c748479";
+        var scJsHost = (("https:" == document.location.protocol) ? "https://secure." : "http://www.");
+        document.write("<sc"+"ript type='text/javascript' src='" + scJsHost + "statcounter.com/counter/counter.js'></"+"script>");
+      </script>
+    </div>
 
-<div align="center">
-<iframe frameborder="0" scrolling="no" height="192" width="304" allowtransparency="true" marginwidth="0" marginheight="0" src="https://indrates.investing.com/index.php?force_lang=1&pairs_ids=166;172;27;167;40830;179;53094;&header-text-color=%23FFFFFF&curr-name-color=%230059b0&inner-text-color=%23000000&green-text-color=%232A8215&green-background=%23B7F4C2&green-background=%23B7F4C2&red-text-color=%23DC0001&red-background=%23FFE2E2&inner-border-color=%23CBCBCB&border-color=%23cbcbcb&bg1=%23F6F6F6&bg2=%23ffffff&open=hide&high=hide&low=hide&last_update=hide"></iframe><br /><span style="font-size: 11px;color: #333333;text-decoration: none;"></a></span>
-</div>
+    <!-- ══ COL 3: CHARTS ══ -->
+    <div class="col" style="border-right:none;">
+      <div class="section-label">Employment & Rates</div>
 
+      <div class="card">
+        <div class="card-title">
+          USA Unemployment
+          <a href="https://www.bls.gov/" target="_blank" class="card-link">BLS ↗</a>
+        </div>
+        <div class="embed-wrap">
+          <iframe src="https://tradingeconomics.com/embed/?s=usurtot&v=202501101337V20230410&h=300&w=580&ref=/united-states/unemployment-rate&type=spline&d1=1948-01-01&d2=2024-12-31"
+            height="300" width="580" frameborder="0" scrolling="no"></iframe>
+        </div>
+      </div>
 
+      <div class="card">
+        <div class="card-title">
+          Australia Unemployment
+          <span style="display:flex; gap:8px;">
+            <a href="https://www.abs.gov.au/ausstats/abs@.nsf/mf/6202.0" target="_blank" class="card-link">ABS ↗</a>
+            <a href="https://www.rba.gov.au/chart-pack/regions-industry.html" target="_blank" class="card-link">RBA ↗</a>
+          </span>
+        </div>
+        <div class="embed-wrap">
+          <iframe src="https://tradingeconomics.com/embed/?s=aulfunem&v=202501160312V20230410&h=300&w=580&ref=/australia/unemployment-rate&type=spline&d1=1978-02-01&d2=2024-12-31"
+            height="300" width="580" frameborder="0" scrolling="no"></iframe>
+        </div>
+      </div>
 
-<td width="20%" valign="top">
+      <div class="card">
+        <div class="card-title">
+          Australia Interest Rates
+          <span style="display:flex; gap:8px;">
+            <a href="https://www.rba.gov.au/statistics/cash-rate/" target="_blank" class="card-link">RBA ↗</a>
+            <a href="https://fred.stlouisfed.org/series/IR3TBB01AUQ156N" target="_blank" class="card-link">90-Day ↗</a>
+          </span>
+        </div>
+        <div class="embed-wrap">
+          <iframe src="https://d3fy651gv2fhd3.cloudfront.net/embed/?s=rbatctr&v=202205030741V20220312&d1=19220609&h=286&w=484"
+            height="286" width="484" frameborder="0" scrolling="no"></iframe>
+        </div>
+      </div>
 
+      <div class="card">
+        <div class="card-title">
+          USA Interest Rate
+          <a href="https://fred.stlouisfed.org/series/FEDFUNDS#0" target="_blank" class="card-link">Fed Data ↗</a>
+        </div>
+        <div class="embed-wrap">
+          <a href="https://tradingeconomics.com/united-states/interest-rate" target="_blank">
+            <img src="https://d3fy651gv2fhd3.cloudfront.net/charts/united-states-interest-rate.png?s=fdtr&v=202004091500V20191105&d1=19200508" width="484" height="286" alt="USA Interest Rate" style="display:block;">
+          </a>
+        </div>
+      </div>
+    </div>
 
-<div align="center">
-<script type="text/javascript"
-	src="https://www.oil-price.net/TABLE2/gen.php?lang=en">
-</script>
-<noscript> <a href="http://www.oil-price.net/dashboard.php?lang=en">To get the oil price, please enable Javascript.</a>
-</noscript>
-</div>
+  </div><!-- /dashboard -->
 
-<br>
-<br>
-
-
-<div align="center">
-<script type="text/javascript" src="https://www.gold-quote.net/TABLE2/gen.php?lang=en"> </script>
-<noscript> <a href="http://www.gold-quote.net">To get the gold price, please enable Javascript.</a> </noscript>
-</div>
-
-<br>
-<br>
-
-<div align="center">
-<A href="https://economicindicators.rf.gd/Gold.html" target=_blank><IMG height=124 alt="[Most Recent Quotes from www.kitco.com]" hspace=0 src="http://www.kitconet.com/charts/metals/gold/t24_au_en_auoz_2.gif" width=172 border=20></A>
-</div>
-
-
-
-
-<div align="center">
-<!-- EXCHANGERATES.ORG.UK LIVE FOREX RATES TABLE START --> 
-<div style="width:178px;margin:50;padding:0;border:1px solid #CBCBCB;background:#fff;">
-<div style="width:178px;text-align:center;padding:2px 0px;vertical-align:middle;color:#003366;font-family:arial;font-size:11px;font-weight:bold;">
-	<a style="color:#003366;text-decoration:none;text-transform:uppercase;font-family:arial;font-size:11px;font-weight:bold;" href="http://www.exchangerates.org.uk" target="_new">Live Exchange Rates</a>
-</div>
-<div style="padding:0px;text-align:center;">
-<script type="text/javascript"> 
-var tz = '10';
-var mc = 'AUD';
-var nb = '2';
-var c1 = 'USD';
-var c2 = 'NZD';
-var bc = 'Base Currency';
-var lc = '003366';
-var bdrc = 'CBCBCB';
-
-</script>
-<script type="text/javascript" src="http://www.currency.me.uk/remote/FE-FERT-1.php"></script>
-</div></div>
-<!-- EXCHANGERATES.ORG.UK LIVE FOREX RATES TABLE END -->
-</div>
-
-
-<div align="center">
-<FORM>
-<INPUT TYPE="BUTTON" VALUE="     Click Here For AUS Economic Data    " ONCLICK="window.location.href='http://economicindicators.rf.gd/Additional%20AUS%20Indicators.html'">
-</FORM>
-</div>
-
-<br>
-
-<div align="center">
-<!-- Start of StatCounter Code for Default Guide -->
-<script type="text/javascript">
-var sc_project=9955760; 
-var sc_invisible=0; 
-var sc_security="2c748479"; 
-var scJsHost = (("https:" == document.location.protocol) ?
-"https://secure." : "http://www.");
-document.write("<sc"+"ript type='text/javascript' src='" +
-scJsHost+
-"statcounter.com/counter/counter.js'></"+"script>");
-</script>
-<noscript><div class="statcounter"><a title="web statistics"
-href="http://statcounter.com/free-web-stats/"
-target="_blank"><img class="statcounter"
-src="http://c.statcounter.com/9955760/0/2c748479/0/"
-alt="web statistics"></a></div></noscript>
-<!-- End of StatCounter Code for Default Guide -->
-</div>
-
-
-
-
-
-
-</td>
-
-</td>
-
-<td width="40%" valign="top">
-
-
-<div align="center">
-        USA Unemployment.  Also <a href="https://www.bls.gov/" target="_blank">BLS data</a>        
-</div>
-<div align="center">
-<iframe src='https://tradingeconomics.com/embed/?s=usurtot&v=202501101337V20230410&h=300&w=600&ref=/united-states/unemployment-rate&type=spline&d1=1948-01-01&d2=2024-12-31' height='300' width='600' frameborder='0' scrolling='no'></iframe><a href='https://tradingeconomics.com/united-states/unemployment-rate'></a>
-</div>
-
-
-<br>
-<br>
-<br>
-
-<div align="center">
-        Australia Unemployment.  Also <a href="https://www.abs.gov.au/ausstats/abs@.nsf/mf/6202.0" target="_blank">ABS data</a> and <a href="https://www.rba.gov.au/chart-pack/regions-industry.html" target="_blank">RBA data</a>
-</div>
-
-<div align="center">
-<iframe src='https://tradingeconomics.com/embed/?s=aulfunem&v=202501160312V20230410&h=300&w=600&ref=/australia/unemployment-rate&type=spline&d1=1978-02-01&d2=2024-12-31' height='300' width='600'  frameborder='0' scrolling='no'></iframe>
-</div>
-
-
-<br>
-<br>
-<br>
-
-<div align="center">
-Australia Interest Rates.  Also <a href="https://www.rba.gov.au/statistics/cash-rate/" target="_blank">RBA data</a> and <a href="https://tradingeconomics.com/australia/interest-rate" target="_blank">TE data</a> and <a href="https://fred.stlouisfed.org/series/IR3TBB01AUQ156N" target="_blank">90 Day Rate</a>.  
-</div>
-
-<div align="center">
-<iframe src='https://d3fy651gv2fhd3.cloudfront.net/embed/?s=rbatctr&v=202205030741V20220312&d1=19220609&h=286&w=484' height='286' width='484'  frameborder='0' scrolling='no'></iframe></a>
-</div>
-
-
-<br>
-<br>
-
-<div align="center">
-<FORM>
-<INPUT TYPE="BUTTON" VALUE="Click Here For Weather and Beach Info" ONCLICK="window.location.href='http://economicindicators.rf.gd/weather.html'">
-</FORM>
-</div>
-
-<br>
-
-
-</td>
-
-</tr>
-</table>
-
-
+</div><!-- /page-wrap -->
 </body>
 </html>
