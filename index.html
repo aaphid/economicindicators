@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=1300, user-scalable=yes">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>Economic Indicators</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -334,14 +334,11 @@
 
   /* ── RESPONSIVE ── */
   @media (max-width: 1100px) {
-    .dashboard { grid-template-columns: 1fr 1fr; }
-    .col:nth-child(3) { grid-column: 1 / -1; border-right: none; border-top: 1px solid var(--border); }
-  }
-
-  @media (max-width: 700px) {
     .dashboard { grid-template-columns: 1fr; }
-    .col { border-right: none; border-bottom: 1px solid var(--border); padding: 24px 18px; }
+    .col { border-right: none; border-bottom: 1px solid var(--border); }
     header { padding: 16px 20px; }
+    iframe { max-width: 100%; }
+    .embed-wrap iframe, .embed-wrap img { width: 100%; height: auto; }
   }
   .col { animation: fadeUp 0.5s ease both; }
   .col:nth-child(1) { animation-delay: 0.05s; }
