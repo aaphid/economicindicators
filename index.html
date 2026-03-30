@@ -28,7 +28,8 @@
     color: var(--text);
     font-family: var(--mono);
     min-height: 100vh;
-    overflow-x: auto;
+    overflow-x: hidden;
+    max-width: 100%;
   }
 
   /* Grid background */
@@ -337,8 +338,12 @@
     .dashboard { grid-template-columns: 1fr; }
     .col { border-right: none; border-bottom: 1px solid var(--border); }
     header { padding: 16px 20px; }
-    iframe { max-width: 100%; }
-    .embed-wrap iframe, .embed-wrap img { width: 100%; height: auto; }
+    iframe { max-width: 100% !important; width: 100% !important; height: auto !important; }
+    .embed-wrap { overflow-x: auto; }
+    .embed-wrap iframe { min-height: 250px; }
+    img { max-width: 100% !important; height: auto !important; }
+    .tradingview-widget-container { width: 100% !important; }
+    .tradingview-widget-container iframe { width: 100% !important; }
   }
   .col { animation: fadeUp 0.5s ease both; }
   .col:nth-child(1) { animation-delay: 0.05s; }
