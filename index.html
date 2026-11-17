@@ -96,6 +96,16 @@
       background: rgba(77,159,255,0.18);
     }
 
+    .btn-gold {
+      background: rgba(255, 191, 71, 0.10);
+      border-color: rgba(255, 191, 71, 0.45);
+      color: #f5b942;
+    }
+
+    .btn-gold:hover {
+      background: rgba(255, 191, 71, 0.18);
+    }
+
     .btn-weather {
       background: rgba(255,107,53,0.10);
       border-color: rgba(255,107,53,0.35);
@@ -214,8 +224,8 @@
             allowtransparency="true"
             marginwidth="0"
             marginheight="0"
-            src="https://indrates.investing.com/index.php?force_lang=1&pairs_ids=166;172;27;167;40830;179;53094;&header-text-color=%23FFFFFF&curr-name-color=%230059b0&inner-text-color=%23000000&green-text-color=%232A8215&green-background=%23B7F4C2&green-background=%23B7F4C2&red-text-color=%23DC0001&red-background=%23FFE2E2&inner-border-color=%23CBCBCB&border-color=%23cbcbcb&bg1=%23F6F6F6&bg2=%23ffffff&open=hide&high=hide&low=hide&last_update=hide">
-          </iframe>
+            src="https://indrates.investing.com/index.php?force_lang=1&pairs_ids=166;172;27;167;40830;179;53094;&header-text-color=%23FFFFFF&curr-name-color=%230059b0&inner-text-color=%23000000&green-text-color=%2300A300&rate-area-background=%23ffffff&grid-background=%23ffffff&grid-color=%23d8d8d8&border-color=%23FFFFFF&table-label-color=%23000000&table-header-text-color=%23000000&link-color=%230059b0&text-color=%23000000&bottom-gradient-background=%23ffffff&bottom-gradient-dark-background=%23FFFFFF&top-gradient-background=%23FFFFFF&top-gradient-dark-background=%23FFFFFF&customFont=DM+Mono%7C%7Cmonospace&customFont=1&customFontSize=12&sample=1"
+          ></iframe>
         </div>
 
       </td>
@@ -224,7 +234,7 @@
 
           
 
-       <div align="center">
+      <div align="center">
 
 
 
@@ -300,6 +310,15 @@
         <div class="button-wrap">
           <button
             type="button"
+            class="nav-button btn-gold"
+            onclick="window.location.href='https://aaphid.github.io/economicindicators/gold.html'">
+            Gold
+          </button>
+        </div>
+
+        <div class="button-wrap">
+          <button
+            type="button"
             class="nav-button btn-usa"
             onclick="window.location.href='https://aaphid.github.io/economicindicators/additional-usa-indicators.html'">
             + USA Economic Data
@@ -347,14 +366,14 @@
         <br><br>
 
         <div align="center">
-          <div class="content-label">Australia Unemployment &nbsp;·&nbsp; <a href="https://www.abs.gov.au/ausstats/abs@.nsf/mf/6202.0" target="_blank" rel="noopener noreferrer">ABS data</a> &nbsp;·&nbsp; <a href="https://www.rba.gov.au/chart-pack/regions-industry.html" target="_blank" rel="noopener noreferrer">RBA data</a></div>
+          <div class="content-label">Australia Unemployment &nbsp;·&nbsp; <a href="https://www.abs.gov.au/ausstats/abs@.nsf/mf/6202.0" target="_blank" rel="noopener noreferrer">ABS data</a> &nbsp;·&nbsp; <a href="https://tradingeconomics.com/australia/unemployment-rate" target="_blank" rel="noopener noreferrer">TradingEconomics</a></div>
           <iframe src="https://tradingeconomics.com/embed/?s=aulfunem&v=202501160312V20230410&h=300&w=480&ref=/australia/unemployment-rate&type=spline&d1=1978-02-01&d2=2024-12-31" height="300" width="480" frameborder="0" scrolling="no"></iframe>
         </div>
 
         <br><br>
 
         <div align="center">
-          <div class="content-label">Australia Interest Rates &nbsp;·&nbsp; <a href="https://www.rba.gov.au/statistics/cash-rate/" target="_blank" rel="noopener noreferrer">RBA data</a> &nbsp;·&nbsp; <a href="https://tradingeconomics.com/australia/interest-rate" target="_blank" rel="noopener noreferrer">TE data</a> &nbsp;·&nbsp; <a href="https://fred.stlouisfed.org/series/IR3TBB01AUQ156N" target="_blank" rel="noopener noreferrer">90 Day Rate</a></div>
+          <div class="content-label">Australia Interest Rates &nbsp;·&nbsp; <a href="https://www.rba.gov.au/statistics/cash-rate/" target="_blank" rel="noopener noreferrer">RBA data</a> &nbsp;·&nbsp; <a href="https://tradingeconomics.com/australia/interest-rate" target="_blank" rel="noopener noreferrer">TradingEconomics</a></div>
           <iframe src="https://d3fy651gv2fhd3.cloudfront.net/embed/?s=rbatctr&v=202205030741V20220312&d1=19220609&h=286&w=484" height="286" width="484" frameborder="0" scrolling="no"></iframe>
         </div>
 
