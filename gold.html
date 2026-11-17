@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,10 +25,11 @@ In times of high volatility and crisis gold is considered a safe haven to protec
 <br>
 <br>
 
-<div id="chartContainer" style="width:888px; height:525px; margin:0 auto;"></div>
+<!-- Chart 1: AUD, currency fixed -->
+<div id="chartContainerAUD" style="width:888px; height:525px; margin:0 auto;"></div>
 
 <script type="text/javascript">
-var options = {
+var optionsAUD = {
     bullion: 'gold',
     currency: 'AUD',
     timeframe: '1y',
@@ -43,7 +43,31 @@ var options = {
     switchChartType: true,
     exportButton: false
 };
-var chartBV = new BullionVaultChart(options, 'chartContainer');
+var chartBVAUD = new BullionVaultChart(optionsAUD, 'chartContainerAUD');
+</script>
+
+<br>
+<br>
+
+<!-- Chart 2: USD default, user can change currency -->
+<div id="chartContainerUSD" style="width:888px; height:525px; margin:0 auto;"></div>
+
+<script type="text/javascript">
+var optionsUSD = {
+    bullion: 'gold',
+    currency: 'USD',
+    timeframe: '1y',
+    chartType: 'line',
+    containerDefinedSize: true,
+    miniChartMode: false,
+    displayLatestPriceLine: true,
+    switchBullion: true,
+    switchCurrency: true,
+    switchTimeframe: true,
+    switchChartType: true,
+    exportButton: false
+};
+var chartBVUSD = new BullionVaultChart(optionsUSD, 'chartContainerUSD');
 </script>
 
 <br>
