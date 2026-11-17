@@ -4,10 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gold</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
 <script type="text/javascript" src="https://www.bullionvault.com/chart/bullionvaultchart.js?v=1"></script>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap');
-
   html, body {
     background-color: #0a0e14;
     margin: 0;
@@ -89,7 +90,7 @@
 <div class="gold-intro">
 Gold is and always has been currency.  There is no better proof than the fact that every central bank in the world has large holdings of gold.
 <br>
-"According to the World Gold Council, central banks collectively bought 651.5 tonnes of gold in 2018, <a href="https://economictimes.indiatimes.com/markets/stocks/news/central-banks-bought-most-gold-in-2018-since-1967-wgc/articleshow/67768449.cms?from=mdr">the most purchases in more than 50 years</a>."  -  <a href="https://en.macromicro.me/charts/93189/gold-demand-central-banks-and-other-inst" target="_blank">How much gold are central banks buying?</a>
+"According to the World Gold Council, central banks collectively bought 651.5 tonnes of gold in 2018, <a href="https://economictimes.indiatimes.com/markets/stocks/news/central-banks-bought-most-gold-in-2018-since-1967-wgc/articleshow/67768449.cms#:~:text=Driving%20the%20increase%20were%20central%20banks%20which%20bought%20651.5%20tonnes%20%2D%2074%20per%20cent%20more%20than%20in%202017%20and%20the%20second%20highest%20annual%20total%20on%20record%20%2D%20as%20countries%20including%20China%20and%20Poland%20joined%20Russia%2C%20Turkey%20and%20Kazakhstan%20adding%20to%20their%20reserves%2C%20the%20WGC%20said." target="_blank">the most purchases in more than 50 years</a>."  -  <a href="https://en.macromicro.me/charts/93189/gold-demand-central-banks-and-other-inst" target="_blank">How much gold are central banks buying?</a>
 <br>
 <br>
 But gold is not as easy to manipulate as FIAT currency.  You cannot simply print more of it.
@@ -102,35 +103,11 @@ In times of high volatility and crisis gold is considered a safe haven to protec
 <br>
 <br>
 
-<!-- Chart 1: AUD, currency fixed -->
-<div id="chartContainerAUD" class="gold-chart"></div>
+<!-- BullionVault chart: USD default, user can change currency -->
+<div id="chartContainer" class="gold-chart"></div>
 
 <script type="text/javascript">
-var optionsAUD = {
-    bullion: 'gold',
-    currency: 'AUD',
-    timeframe: '1y',
-    chartType: 'line',
-    containerDefinedSize: true,
-    miniChartMode: false,
-    displayLatestPriceLine: true,
-    switchBullion: true,
-    switchCurrency: false,
-    switchTimeframe: true,
-    switchChartType: true,
-    exportButton: false
-};
-var chartBVAUD = new BullionVaultChart(optionsAUD, 'chartContainerAUD');
-</script>
-
-<br>
-<br>
-
-<!-- Chart 2: USD default, user can change currency -->
-<div id="chartContainerUSD" class="gold-chart"></div>
-
-<script type="text/javascript">
-var optionsUSD = {
+var options = {
     bullion: 'gold',
     currency: 'USD',
     timeframe: '1y',
@@ -144,7 +121,7 @@ var optionsUSD = {
     switchChartType: true,
     exportButton: false
 };
-var chartBVUSD = new BullionVaultChart(optionsUSD, 'chartContainerUSD');
+var chartBV = new BullionVaultChart(options, 'chartContainer');
 </script>
 
 <br>
